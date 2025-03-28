@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectPro Navigation Demo</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f2ef;
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: #0a66c2;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .header-nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            padding: 5px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .header-nav a:hover, .header-nav a.active {
+            color: #0a66c2;
+        }
+        
+        .header-nav a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #0a66c2;
+        }
+        
+        .header-nav .icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .profile-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        /* Main content */
+        main {
+            padding: 20px 0;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr 2fr;
+            }
+            .sidebar-right {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-left {
+                display: none;
+            }
+            .header-nav span {
+                display: none;
+            }
+        }
+        
+        /* Cards */
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Profile card */
+        .profile-card {
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-card .cover-img {
+            height: 60px;
+            background-color: #0a66c2;
+        }
+        
+        .profile-card .profile-img-large {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            background-color: #ddd;
+            margin: -36px auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .profile-card h2 {
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+        
+        .profile-card p {
+            margin: 0 0 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .profile-stats {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .tab.active {
+            color: #0a66c2;
+        }
+        
+        .tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #0a66c2;
+        }
+        
+        /* Tab content */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Items list */
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-img {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+        
+        .item-content {
+            flex-grow: 1;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            margin: 0 0 5px;
+        }
+        
+        .item-subtitle {
+            color: #666;
+            margin: 0 0 8px;
+            font-size: 14px;
+        }
+        
+        .item-desc {
+            font-size: 14px;
+            margin: 0;
+            color: #444;
+        }
+        
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            background-color: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background-color: #0a66c2;
+            color: white;
+            border: none;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #0a66c2;
+            color: #0a66c2;
+        }
+        
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 13px;
+        }
+        
+        /* Interest categories */
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .interest-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+        }
+        
+        .interest-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .interest-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .interest-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .interest-item input {
+            margin-right: 8px;
+        }
+        
+        /* Jobs section */
+        .job-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        
+        .job-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .job-title {
+            font-weight: 600;
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+        
+        .job-company {
+            font-size: 16px;
+            margin: 0 0 5px;
+        }
+        
+        .job-location {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+        
+        .job-details {
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .job-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        /* Login page */
+        .login-container {
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0a66c2;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .login-demo {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: #0a66c2;
+            border: 1px solid #0a66c2;
+            border-radius: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .login-divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .login-divider:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #eee;
+            z-index: 1;
+        }
+        
+        .login-divider span {
+            background-color: #fff;
+            padding: 0 10px;
+            position: relative;
+            z-index: 2;
+            color: #666;
+        }
+        
+        .login-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+        }
+        
+        .login-footer a {
+            color: #0a66c2;
+            text-decoration: none;
+        }
+        
+        /* Dark mode */
+        body.dark-mode {
+            background-color: #1c1c1c;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode header {
+            background-color: #2d2d2d;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        body.dark-mode .header-nav a {
+            color: #b0b0b0;
+        }
+        
+        body.dark-mode .header-nav a:hover, 
+        body.dark-mode .header-nav a.active {
+            color: #0a66c2;
+        }
+        
+        body.dark-mode .card,
+        body.dark-mode .login-container,
+        body.dark-mode .interest-card,
+        body.dark-mode .job-card {
+            background-color: #2d2d2d;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        
+        body.dark-mode .card-header,
+        body.dark-mode .profile-stats,
+        body.dark-mode .tabs,
+        body.dark-mode .item {
+            border-color: #444;
+        }
+        
+        body.dark-mode .item-subtitle,
+        body.dark-mode .job-location {
+            color: #b0b0b0;
+        }
+        
+        body.dark-mode .tag {
+            background-color: #444;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .theme-toggle {
+            background-color: #2d2d2d;
+            border-color: #444;
+        }
+        
+        body.dark-mode .login-divider:before {
+            background-color: #444;
+        }
+        
+        body.dark-mode .login-divider span {
+            background-color: #2d2d2d;
+            color: #b0b0b0;
+        }
+        
+        body.dark-mode .login-footer {
+            color: #b0b0b0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page (default) -->
+    <div id="login-page" class="page">
+        <div class="login-container">
+            <div class="login-logo">
+                <h1 style="color: #0a66c2; margin: 0;">ConnectPro</h1>
+                <p style="margin: 5px 0 0;">Professional networking simplified</p>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="linkedin-url">LinkedIn Profile URL</label>
+                    <input class="form-input" type="text" id="linkedin-url" placeholder="https://www.linkedin.com/in/yourprofile">
+                </div>
+                
+                <button class="login-button" onclick="showMainPage()">
+                    <span style="font-size: 20px;">in</span> Sign in with LinkedIn Profile
+                </button>
+                
+                <div class="login-divider">
+                    <span>or</span>
+                </div>
+                
+                <button class="login-demo" onclick="showMainPage()">
+                    Continue with Demo Profile
+                </button>
+            </div>
+            
+            <div class="login-footer">
+                By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main App (hidden by default) -->
+    <div id="main-page" class="page" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="container header-container">
+                <a href="#" class="logo">ConnectPro</a>
+                
+                <div class="header-nav">
+                    <a href="#" class="active" onclick="showTab('home')">
+                        <div class="icon">🏠</div>
+                        <span>Home</span>
+                    </a>
+                    <a href="#" onclick="showTab('interests')">
+                        <div class="icon">⭐</div>
+                        <span>Interests</span>
+                    </a>
+                    <a href="#" onclick="showTab('jobs')">
+                        <div class="icon">💼</div>
+                        <span>Jobs</span>
+                    </a>
+                    <a href="#" onclick="showTab('network')">
+                        <div class="icon">👥</div>
+                        <span>Network</span>
+                    </a>
+                </div>
+                
+                <div class="user-nav">
+                    <div class="profile-img" onclick="togglePage()">JD</div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="container">
+                <div class="content-grid">
+                    <!-- Left sidebar -->
+                    <div class="sidebar-left">
+                        <div class="card profile-card">
+                            <div class="cover-img"></div>
+                            <div class="profile-img-large">JD</div>
+                            <h2>John Doe</h2>
+                            <p>Senior Product Manager at TechCorp</p>
+                            
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span>Profile views</span>
+                                    <strong>238</strong>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Post impressions</span>
+                                    <strong>1,567</strong>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Connections</span>
+                                    <strong>526</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Main content -->
+                    <div class="main-content">
+                        <!-- HOME TAB -->
+                        <div id="home-tab" class="tab-content active">
+                            <div class="card">
+                                <div class="card-header">
+                                    Recommended for you
+                                </div>
+                                <div class="card-body">
+                                    <ul class="item-list">
+                                        <li class="item">
+                                            <div class="item-img">📄</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">10 Tips for Better Product Management</h3>
+                                                <p class="item-subtitle">Article by Sarah Johnson • Product Lead at Google</p>
+                                                <p class="item-desc">Learn how top product managers prioritize features and communicate with stakeholders effectively.</p>
+                                                <div class="tag-list">
+                                                    <span class="tag">Product Management</span>
+                                                    <span class="tag">Leadership</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="item">
+                                            <div class="item-img">📊</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Product Analytics Workshop</h3>
+                                                <p class="item-subtitle">Online Event • Next Tuesday</p>
+                                                <p class="item-desc">Join us for a hands-on workshop on using analytics to make better product decisions.</p>
+                                                <div class="tag-list">
+                                                    <span class="tag">Analytics</span>
+                                                    <span class="tag">Workshop</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    People you may know
+                                </div>
+                                <div class="card-body">
+                                    <ul class="item-list">
+                                        <li class="item">
+                                            <div class="item-img">MB</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Michael Brown</h3>
+                                                <p class="item-subtitle">Product Director at Amazon • 12 mutual connections</p>
+                                                <button class="btn btn-outline btn-sm">Connect</button>
+                                            </div>
+                                        </li>
+                                        <li class="item">
+                                            <div class="item-img">EW</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Emily Wilson</h3>
+                                                <p class="item-subtitle">UX Designer at Microsoft • 8 mutual connections</p>
+                                                <button class="btn btn-outline btn-sm">Connect</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- INTERESTS TAB -->
+                        <div id="interests-tab" class="tab-content">
+                            <div class="card">
+                                <div class="card-header">
+                                    Your Interests
+                                </div>
+                                <div class="card-body">
+                                    <p>Select topics you're interested in to get more relevant recommendations.</p>
+                                    
+                                    <div class="interest-grid">
+                                        <div class="interest-card">
+                                            <h3>Technology</h3>
+                                            <ul class="interest-list">
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="tech1" checked>
+                                                    <label for="tech1">Artificial Intelligence</label>
+                                                </li>
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="tech2" checked>
+                                                    <label for="tech2">Product Management</label>
+                                                </li>
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="tech3">
+                                                    <label for="tech3">Cloud Computing</label>
+                                                </li>
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="tech4">
+                                                    <label for="tech4">Cybersecurity</label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="interest-card">
+                                            <h3>Business</h3>
+                                            <ul class="interest-list">
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="bus1" checked>
+                                                    <label for="bus1">Leadership</label>
+                                                </li>
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="bus2">
+                                                    <label for="bus2">Startups</label>
+                                                </li>
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="bus3">
+                                                    <label for="bus3">Marketing</label>
+                                                </li>
+                                                <li class="interest-item">
+                                                    <input type="checkbox" id="bus4">
+                                                    <label for="bus4">Finance</label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    Suggested Interests
+                                </div>
+                                <div class="card-body">
+                                    <ul class="item-list">
+                                        <li class="item">
+                                            <div class="item-img">📱</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Mobile Development</h3>
+                                                <p class="item-subtitle">Based on your interest in Product Management</p>
+                                                <button class="btn btn-outline btn-sm">Add Interest</button>
+                                            </div>
+                                        </li>
+                                        <li class="item">
+                                            <div class="item-img">📊</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Data Science</h3>
+                                                <p class="item-subtitle">Based on your interest in Artificial Intelligence</p>
+                                                <button class="btn btn-outline btn-sm">Add Interest</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- JOBS TAB -->
+                        <div id="jobs-tab" class="tab-content">
+                            <div class="card">
+                                <div class="card-header">
+                                    Job Preferences
+                                </div>
+                                <div class="card-body">
+                                    <p>Your current job preferences:</p>
+                                    <ul style="margin-bottom: 20px;">
+                                        <li>Role: Senior Product Manager</li>
+                                        <li>Location: San Francisco, CA (Remote OK)</li>
+                                        <li>Industries: Technology, SaaS, E-commerce</li>
+                                        <li>Job types: Full-time, Remote</li>
+                                        <li>Salary range: $150,000 - $180,000</li>
+                                    </ul>
+                                    <button class="btn btn-outline">Edit Preferences</button>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    Recommended Jobs
+                                </div>
+                                <div class="card-body">
+                                    <div class="job-card">
+                                        <div class="job-header">
+                                            <div class="company-logo">SF</div>
+                                            <div>
+                                                <h3 class="job-title">Senior Product Manager</h3>
+                                                <p class="job-company">Salesforce</p>
+                                                <p class="job-location">San Francisco, CA (Remote)</p>
+                                            </div>
+                                        </div>
+                                        <div class="job-details">
+                                            <p>We're looking for an experienced Product Manager to lead our customer experience initiatives. You'll work closely with design and engineering teams to build innovative solutions.</p>
+                                            <div class="tag-list">
+                                                <span class="tag">Product Strategy</span>
+                                                <span class="tag">SaaS</span>
+                                                <span class="tag">Enterprise</span>
+                                            </div>
+                                        </div>
+                                        <div class="job-actions">
+                                            <button class="btn btn-primary">Apply Now</button>
+                                            <button class="btn btn-outline">Save</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="job-card">
+                                        <div class="job-header">
+                                            <div class="company-logo">AB</div>
+                                            <div>
+                                                <h3 class="job-title">Product Manager, Growth</h3>
+                                                <p class="job-company">Airbnb</p>
+                                                <p class="job-location">Remote</p>
+                                            </div>
+                                        </div>
+                                        <div class="job-details">
+                                            <p>Join our Growth team to help drive user acquisition and retention. In this role, you'll analyze user behavior and develop strategies to improve our key metrics.</p>
+                                            <div class="tag-list">
+                                                <span class="tag">Growth</span>
+                                                <span class="tag">Analytics</span>
+                                                <span class="tag">Consumer</span>
+                                            </div>
+                                        </div>
+                                        <div class="job-actions">
+                                            <button class="btn btn-primary">Apply Now</button>
+                                            <button class="btn btn-outline">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- NETWORK TAB -->
+                        <div id="network-tab" class="tab-content">
+                            <div class="card">
+                                <div class="card-header">
+                                    Network Overview
+                                </div>
+                                <div class="card-body">
+                                    <div style="margin-bottom: 20px;">
+                                        <p style="font-size: 32px; font-weight: 600; margin: 0 0 5px;">526</p>
+                                        <p style="margin: 0;">Total connections</p>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 30px; margin-bottom: 20px;">
+                                        <div>
+                                            <p style="font-size: 24px; font-weight: 600; margin: 0 0 5px;">12</p>
+                                            <p style="margin: 0;">New messages</p>
+                                        </div>
+                                        <div>
+                                            <p style="font-size: 24px; font-weight: 600; margin: 0 0 5px;">5</p>
+                                            <p style="margin: 0;">Pending invites</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tag-list" style="margin-top: 20px;">
+                                        <span class="tag">Product Management (89)</span>
+                                        <span class="tag">Technology (143)</span>
+                                        <span class="tag">Startups (67)</span>
+                                        <span class="tag">Marketing (45)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    People to Follow
+                                </div>
+                                <div class="card-body">
+                                    <ul class="item-list">
+                                        <li class="item">
+                                            <div class="item-img">ML</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Marissa Lee</h3>
+                                                <p class="item-subtitle">VP of Product at Stripe • 27K followers</p>
+                                                <button class="btn btn-outline btn-sm">Follow</button>
+                                            </div>
+                                        </li>
+                                        <li class="item">
+                                            <div class="item-img">RJ</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">Robert Jones</h3>
+                                                <p class="item-subtitle">Product Leader at Netflix • 18K followers</p>
+                                                <button class="btn btn-outline btn-sm">Follow</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    Posts to Read
+                                </div>
+                                <div class="card-body">
+                                    <ul class="item-list">
+                                        <li class="item">
+                                            <div class="item-img">ML</div>
+                                            <div class="item-content">
+                                                <h3 class="item-title">The Future of Product Management in AI-Driven Companies</h3>
+                                                <p class="item-subtitle">Marissa Lee • VP of Product at Stripe</p>
+                                                <p class="item-desc">As AI transforms how we build products, PMs need to adapt their approach to discovery and delivery.</p>
+                                                <div class="tag-list">
+                                                    <span class="tag">Artificial Intelligence</span>
+                                                    <span class="tag">Product Strategy</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right sidebar -->
+                    <div class="sidebar-right">
+                        <div class="card">
+                            <div class="card-header">
+                                Skills to Learn
+                            </div>
+                            <div class="card-body">
+                                <ul class="item-list">
+                                    <li class="item">
+                                        <div class="item-img">📊</div>
+                                        <div class="item-content">
+                                            <h3 class="item-title">Data Analysis</h3>
+                                            <p class="item-subtitle">15% increase in job opportunities</p>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="item-img">🔄</div>
+                                        <div class="item-content">
+                                            <h3 class="item-title">Agile Methodologies</h3>
+                                            <p class="item-subtitle">22% increase in job opportunities</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                Recommended Courses
+                            </div>
+                            <div class="card-body">
+                                <ul class="item-list">
+                                    <li class="item">
+                                        <div class="item-img">🎓</div>
+                                        <div class="item-content">
+                                            <h3 class="item-title">Advanced Product Strategy</h3>
+                                            <p class="item-subtitle">Coursera • 8 weeks</p>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="item-img">💻</div>
+                                        <div class="item-content">
+                                            <h3 class="item-title">Product Analytics Mastery</h3>
+                                            <p class="item-subtitle">Udemy • 6 weeks</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Theme toggle button -->
+    <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
+    
+    <script>
+        // Simple navigation without page reloads
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Update active nav
+            document.querySelectorAll('.header-nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find the clicked nav item and make it active
+            const clickedNav = Array.from(document.querySelectorAll('.header-nav a')).find(
+                link => link.getAttribute('onclick').includes(tabName)
+            );
+            
+            if (clickedNav) {
+                clickedNav.classList.add('active');
+            }
+        }
+        
+        // Toggle between login and main page
+        function togglePage() {
+            const loginPage = document.getElementById('login-page');
+            const mainPage = document.getElementById('main-page');
+            
+            if (loginPage.style.display !== 'none') {
+                loginPage.style.display = 'none';
+                mainPage.style.display = 'block';
+            } else {
+                loginPage.style.display = 'block';
+                mainPage.style.display = 'none';
+            }
+        }
+        
+        // Show main page (for login buttons)
+        function showMainPage() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-page').style.display = 'block';
+        }
+        
+        // Toggle between light and dark theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
